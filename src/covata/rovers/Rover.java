@@ -25,7 +25,25 @@ public class Rover {
 	 *
 	 */
 	public enum Direction {
-		N, E, S, W;
+		N(0), E(1), S(2), W(3);
+		private static final Direction[] vals = Direction.values();
+
+		private final int mVal;
+
+		private Direction(int val) {
+			mVal = val;
+		}
+
+		public Direction getNextClockwise() {
+			return vals[(mVal + 1) % 4];
+		}
+
+		public Direction getPrevious() {
+			int prev = mVal - 1;
+			if (prev < 0)
+				prev = 3;
+			return vals[prev];
+		}
 
 		public static Direction getDirection(String str) {
 			switch (str) {
@@ -74,10 +92,10 @@ public class Rover {
 		if (Move.isValidMove(this, move, urCorner)) {
 			switch (move) {
 			case L:
-				TurnLeft();
+				turnLeft();
 				break;
 			case R:
-				TurnRight();
+				turnRight();
 				break;
 			case M:
 				moveForward();
@@ -121,48 +139,20 @@ public class Rover {
 
 	/**
 	 * Update the direction of the robot after turning right
+	 * 
+	 * @param urCorner
 	 */
-	public void TurnRight() {
-		switch (getDirection()) {
-		case N:
-			setDirection(Direction.E);
-			break;
-		case S:
-			setDirection(Direction.W);
-			break;
-		case W:
-			setDirection(Direction.N);
-			break;
-		case E:
-			setDirection(Direction.S);
-			break;
-		default:
-			throw new UnsupportedOperationException(
-					"Rover.TurnRight: impossible direction");
-		}
+	public void turnRight() {
+		this.setDirection(getDirection().getNextClockwise());
 	}
 
 	/**
 	 * Update the direction of the robot after turning left
+	 * 
+	 * @param urCorner
 	 */
-	public void TurnLeft() {
-		switch (getDirection()) {
-		case N:
-			setDirection(Direction.W);
-			break;
-		case S:
-			setDirection(Direction.E);
-			break;
-		case W:
-			setDirection(Direction.S);
-			break;
-		case E:
-			setDirection(Direction.N);
-			break;
-		default:
-			throw new UnsupportedOperationException(
-					"Rover.TurnLeft: impossible direction");
-		}
+	public void turnLeft() {
+		this.setDirection(getDirection().getPrevious());
 	}
 
 	public Position getPosition() {
