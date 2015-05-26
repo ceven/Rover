@@ -2,75 +2,27 @@ package covata.rovers;
 
 import java.util.List;
 
-import covata.rovers.Move.RobotMove;
-
 /**
- * This class provides a definition of a rover as a position (x,y) and a
- * direction (N,S,E,W).
+ * This class provides a definition of a rover as a position {@code Position}
+ * and a direction ({@code Direction}).
  * 
  * @author ceven
  *
  */
 public class Rover {
 
-	/**
-	 * Possible directions for the robot:<br>
-	 * 
-	 * {@code N} the robot is facing North<br>
-	 * {@code S} the robot is facing South<br>
-	 * {@code W} the robot is facing West<br>
-	 * {@code E} the robot is facing East<br>
-	 * 
-	 * @author ceven
-	 *
-	 */
-	public enum Direction {
-		N(0), E(1), S(2), W(3);
-		private static final Direction[] vals = Direction.values();
-
-		private final int mVal;
-
-		private Direction(int val) {
-			mVal = val;
-		}
-
-		public Direction getNextClockwise() {
-			return vals[(mVal + 1) % 4];
-		}
-
-		public Direction getPrevious() {
-			int prev = mVal - 1;
-			if (prev < 0)
-				prev = 3;
-			return vals[prev];
-		}
-
-		public static Direction getDirection(String str) {
-			switch (str) {
-			case "N":
-				return Direction.N;
-			case "S":
-				return Direction.S;
-			case "E":
-				return Direction.E;
-			case "W":
-				return Direction.W;
-			default:
-				throw new UnsupportedOperationException(
-						"Rover.Direction.getDirection(String str): Unknown direction: "
-								+ str);
-			}
-		}
-	}
-
+	/** The current position of the rover */
 	private Position mPosition;
+	/** The direction this rover is facing */
 	private Direction mDirection;
 
 	/**
 	 * Create a new rover with an initial position and direction
 	 * 
 	 * @param initialPos
+	 *            the initial position
 	 * @param initialDir
+	 *            the initial direction
 	 */
 	public Rover(Position initialPos, Direction initialDir) {
 		mPosition = initialPos;
@@ -82,13 +34,16 @@ public class Rover {
 	 * Ensure that the rover does not exit the grid
 	 * 
 	 * @param moves
+	 *            a list of {@code Move} to perform by this {@code Rover}
 	 * @param urCorner
+	 *            the {@code Position} of the upper right corner of the grid
+	 *            where the rover evolves
 	 */
-	public void executeInstructions(List<RobotMove> moves, Position urCorner) {
+	public void executeInstructions(List<Move> moves, Position urCorner) {
 		moves.forEach(m -> move(m, urCorner));
 	}
 
-	private void move(RobotMove move, Position urCorner) {
+	private void move(Move move, Position urCorner) {
 		if (Move.isValidMove(this, move, urCorner)) {
 			switch (move) {
 			case L:
@@ -131,7 +86,7 @@ public class Rover {
 	}
 
 	/**
-	 * Make this robot move forward
+	 * Make this robot move forward (update its position)
 	 */
 	public void moveForward() {
 		setPosition(getPositionForward());
@@ -140,7 +95,6 @@ public class Rover {
 	/**
 	 * Update the direction of the robot after turning right
 	 * 
-	 * @param urCorner
 	 */
 	public void turnRight() {
 		this.setDirection(getDirection().getNextClockwise());
@@ -149,16 +103,23 @@ public class Rover {
 	/**
 	 * Update the direction of the robot after turning left
 	 * 
-	 * @param urCorner
 	 */
 	public void turnLeft() {
-		this.setDirection(getDirection().getPrevious());
+		this.setDirection(getDirection().getNextAnticlockwise());
 	}
 
+	/**
+	 * 
+	 * @return the position of the rover
+	 */
 	public Position getPosition() {
 		return mPosition;
 	}
 
+	/**
+	 * 
+	 * @return the direction of the rover
+	 */
 	public Direction getDirection() {
 		return mDirection;
 	}
@@ -178,8 +139,19 @@ public class Rover {
 						getPosition(), getDirection());
 	}
 
+	/**
+	 * 
+	 * @return a string representing the position and the direction of the
+	 *         robot, separated by a blank space
+	 */
 	public String toSimpleString() {
 		return getPosition().toSimpleString() + " " + getDirection().toString();
+	}
+
+	@Override
+	protected Rover clone() {
+		return new Rover(new Position(getPosition().getX(), getPosition()
+				.getY()), getDirection());
 	}
 
 }

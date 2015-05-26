@@ -1,40 +1,44 @@
 package covata.rovers;
 
 /**
- * The class Move provides a RobotMove definition as well as useful functions
- * e.g. to determine whether a move is valid for a given grid (defined by a
- * right hand corner position) and a Rover.
+ * The enum class {@code Move} provides a move definition as well as useful
+ * functions e.g. to determine whether a move is valid for a given grid (defined
+ * by a right hand corner position) and a {@code Rover}.
  * 
  * @author ceven
  *
  */
-public class Move {
+public enum Move {
 
 	/**
-	 * Possible moves for a robot:<br>
+	 * Possible moves:
 	 * 
-	 * {@code M} Move forward <br>
-	 * {@code L} Turn left<br>
-	 * {@code R} Turn right
+	 * @see #M move forward
+	 * @see #L turn left
+	 * @see #R turn right
 	 * 
-	 * @author ceven
-	 *
 	 */
-	enum RobotMove {
-		M, L, R
-	}
+	M, L, R;
 
-	public static RobotMove getMove(String str) {
-		switch (str) {
-		case "M":
-			return RobotMove.M;
-		case "L":
-			return RobotMove.L;
-		case "R":
-			return RobotMove.R;
+	/**
+	 * 
+	 * @param ch
+	 *            a char representing a move: 'M', 'L' or 'R'
+	 * @return the {@code Move} corresponding to this character
+	 * @throws IllegalArgumentException
+	 *             if the character is not one of 'M', 'L' or 'R'
+	 */
+	public static Move getMove(char ch) {
+		switch (ch) {
+		case 'M':
+			return Move.M;
+		case 'L':
+			return Move.L;
+		case 'R':
+			return Move.R;
 		default:
-			throw new UnsupportedOperationException(
-					"RobotMove.getMove(String str): unknown move: " + str);
+			throw new IllegalArgumentException(
+					"Move.getMove(Character ch): unknown move: " + ch);
 		}
 	}
 
@@ -49,8 +53,7 @@ public class Move {
 	 *            the upper right corner of the grid
 	 * @return true if the move is valid, false otherwise
 	 */
-	public static boolean isValidMove(Rover rover, RobotMove move,
-			Position urCorner) {
+	public static boolean isValidMove(Rover rover, Move move, Position urCorner) {
 		switch (move) {
 		case M: {
 			Position forward = rover.getPositionForward();

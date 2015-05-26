@@ -8,12 +8,12 @@ public class Main {
 		if (args != null && args.length > 0) {
 			file = new File(args[0]);
 		}
-		if (!Utilities.isValidFile(file)) {
-			file = Utilities.loadFile(false);
+		if (!FileUtilities.isValidFile(file)) {
+			file = FileUtilities.loadFile(false);
 		}
-		Experiment exp = new Experiment(file);
-		System.out.println("Input file: " + exp.getInputFilePath());
-		System.out.println("Input:\n" + exp.getInputFile().toSimpleString());
-		System.out.println("Output:\n" + exp.getOutput().toString());
+		String input = FileUtilities.readFile(file);
+		NASAControl exp = new NASAControl(input);
+		System.out.println("Input:\n " + input);
+		System.out.println("Output:\n" + exp.getOutputStr().toString());
 	}
 }
