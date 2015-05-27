@@ -13,7 +13,7 @@ public class Main {
 		}
 		String input = FileUtilities.readFile(file);
 		NASAControl exp = new NASAControl(input);
-		System.out.println("Input:\n " + input);
+		System.out.println("Input:\n" + input);
 		System.out.println("Output:\n" + exp.getOutputStr().toString());
 	}
 }

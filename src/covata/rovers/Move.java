@@ -43,7 +43,7 @@ public enum Move {
 	}
 
 	/**
-	 * A move is valid if the robot does not exit the grid
+	 * A move is valid if the rover does not exit the grid
 	 * 
 	 * @param rover
 	 *            the rover which performs the move
@@ -63,8 +63,8 @@ public enum Move {
 		}
 		case R:
 		case L:
-			// Moves which do not change the robot position are valid as the
-			// robot will not exit the grid
+			// Moves which do not change the rover position are valid as the
+			// rover will not exit the grid
 			return true;
 		default:
 			throw new UnsupportedOperationException(

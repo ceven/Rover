@@ -13,7 +13,7 @@ public class Rover {
 
 	/** The current position of the rover */
 	private Position mPosition;
-	/** The direction this rover is facing */
+	/** The direction of this rover ; see {@link Direction} */
 	private Direction mDirection;
 
 	/**
@@ -31,7 +31,7 @@ public class Rover {
 
 	/**
 	 * Move this rover according to the sequence of instructions provided.
-	 * Ensure that the rover does not exit the grid
+	 * Ensure that the rover does not exit the grid.
 	 * 
 	 * @param moves
 	 *            a list of {@code Move} to perform by this {@code Rover}
@@ -61,13 +61,13 @@ public class Rover {
 			}
 		} else
 			throw new UnsupportedOperationException(
-					"Rover.move: The move will make the robot exit the grid! Robot pos: "
+					"Rover.move: The move will make the rover exit the grid! Rover pos: "
 							+ this.getPosition().toString() + ", move: "
 							+ move.toString());
 	}
 
 	/**
-	 * Get the position of the robot if it is to move forward
+	 * Get the position of the rover if it is to move forward
 	 */
 	Position getPositionForward() {
 		switch (getDirection()) {
@@ -81,19 +81,19 @@ public class Rover {
 			return new Position(getPosition().getX() + 1, getPosition().getY());
 		default:
 			throw new UnsupportedOperationException(
-					"Robot.getPositionForward(): invalid robot direction");
+					"Rover.getPositionForward(): invalid rover direction");
 		}
 	}
 
 	/**
-	 * Make this robot move forward (update its position)
+	 * Make this rover move forward (update its position)
 	 */
 	public void moveForward() {
 		setPosition(getPositionForward());
 	}
 
 	/**
-	 * Update the direction of the robot after turning right
+	 * Make the rover turn right (update its direction)
 	 * 
 	 */
 	public void turnRight() {
@@ -101,7 +101,7 @@ public class Rover {
 	}
 
 	/**
-	 * Update the direction of the robot after turning left
+	 * Make the rover turn left (update its direction)
 	 * 
 	 */
 	public void turnLeft() {
@@ -124,10 +124,22 @@ public class Rover {
 		return mDirection;
 	}
 
+	/**
+	 * Set the direction of this rover
+	 * 
+	 * @param direction
+	 *            the new direction for this rover
+	 */
 	private void setDirection(Direction direction) {
 		this.mDirection = direction;
 	}
 
+	/**
+	 * Set the position of the rover
+	 * 
+	 * @param position
+	 *            the new position for this rover
+	 */
 	private void setPosition(Position position) {
 		this.mPosition = position;
 	}
@@ -142,12 +154,15 @@ public class Rover {
 	/**
 	 * 
 	 * @return a string representing the position and the direction of the
-	 *         robot, separated by a blank space
+	 *         rover, separated by a blank space
 	 */
 	public String toSimpleString() {
 		return getPosition().toSimpleString() + " " + getDirection().toString();
 	}
 
+	/**
+	 * @return a clone (deep copy) of this rover
+	 */
 	@Override
 	protected Rover clone() {
 		return new Rover(new Position(getPosition().getX(), getPosition()
